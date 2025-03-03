@@ -1,10 +1,10 @@
 import Image from "next/image";
-import WeatherAPI from "./home/page"
+import CountryAPI from "./home/page"
 
 export default function Home() {
   return (
     <>
-      <WeatherAPI/>
+      <CountryAPI/>
     </>
   );
 }

@@ -2,22 +2,33 @@
 import React from "react"
 import {useState, useEffect} from "react"
 
-function weatherAPI(){
-    let [weatherData, setWeatherData] = useState(null)
-    useEffect(()=>{
-        fetch("https://api.openweathermap.org/data/2.5/weather?lat={14.716677}&lon={-17.467686}&appid=${71ab0df6779a408450545eacc9c927f1}")
-        .then(response => response.json())
-        .then(data => setWeatherData(data.weather))
-    }, [])
+function restAPI(){
+    let [countryData, setCountryData] = useState([])
+    let [loading, setLoading] = useState(null)
+
+    useEffect(() => {
+        setLoading(true);
+        fetch("https://restcountries.com/v3.1/name/usa")
+            .then((response) => response.json()) 
+            .then((data) => {
+                setCountryData(data);
+                console.log("fetchedData:", data)
+            })
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
+    }, []);
+
     return(
-        <>
-            <div className="w-[60vw] h-[60vh] m-auto bg-beige border-black border-[4px]">
-                <h1>
-                    {weatherData ? weatherData[0]?.description : "Loading..."}
-                </h1>
-            </div>
+        <>  
+            {countryData && countryData.map((country, index)=>{
+                <div key={index} className="w-[60vw] h-[60vh] m-auto bg-beige border-black border-[4px]">
+                    <h1>{country.name.official}</h1>
+                    <p>{country.currencies}</p>
+                    <p>{country.unMember}</p>
+                </div>
+            })}
         </>
     )
 }
 
-export default weatherAPI
+export default restAPI
